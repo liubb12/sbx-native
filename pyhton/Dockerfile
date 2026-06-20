@@ -40,4 +40,4 @@ ENV PORT=7860
 EXPOSE 7860
 
 # 启动你的主流程
-CMD ["python", "main.py"]
+CMD ["python", "app.py"]
