@@ -3,7 +3,6 @@ name: Build and Push Slim Docker Image to GHCR
 on:
   push:
     branches: [ main ]
-    # 只要 main 分支有任何代码变动，就立刻触发构建
   workflow_dispatch:
 
 permissions:
@@ -35,8 +34,8 @@ jobs:
     - name: Build and push Docker image
       uses: docker/build-push-action@v5
       with:
-        # 🔑 核心修正：如果你的 Dockerfile 在仓库根目录，就把下面两行改成 ./ 
-        # 如果你的 Dockerfile 在那个叫 pyhton 的文件夹里，就保持 ./pyhton
+        # 🔑 注意：如果你的 main.py、Dockerfile 在名为 pyhton 的文件夹里，下面保持 ./pyhton
+        # 如果它们就在仓库的最外层根目录下，请把下面两行改成 ./ 和 ./Dockerfile
         context: ./pyhton
         file: ./pyhton/Dockerfile
         push: true
