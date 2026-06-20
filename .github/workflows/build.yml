@@ -4,10 +4,9 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'nodejs/**' # 只有当 nodejs 目录有修改时才触发构建
-  workflow_dispatch: # 允许你在 Actions 页面手动点击运行
+      - 'nodejs/**'
+  workflow_dispatch:
 
-# 关键：赋予工作流向 GHCR 写入镜像的权限
 permissions:
   packages: write
   contents: read
@@ -19,30 +18,27 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    # 1. 登录到 GitHub Container Registry (ghcr.io)
     - name: Log in to GHCR
       uses: docker/login-action@v3
       with:
         registry: ghcr.io
-        username: ${{ github.actor }} # 自动获取你的 GitHub 用户名
-        password: ${{ secrets.GITHUB_TOKEN }} # 自动获取临时密码令牌
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
 
-    # 2. 提取元数据（用于自动生成镜像标签，比如 latest 和 commit 哈希）
     - name: Extract metadata for Docker
       id: meta
       uses: docker/metadata-action@v5
       with:
-        images: ghcr.io/${{ github.repository_owner }}/sbx # 镜像名会是 ghcr.io/你的用户名/sbx
+        images: ghcr.io/${{ github.repository_owner }}/sbx
         tags: |
           type=raw,value=native
           type=raw,value=latest
 
-    # 3. 构建并推送使用 slim 的 Node.js 镜像
     - name: Build and push Docker image
       uses: docker/build-push-action@v5
       with:
-        context: ./nodejs # 指定构建上下文为 nodejs 文件夹
-        file: ./nodejs/Dockerfile # 指定你在 nodejs 里建的 Dockerfile
-        push: true # 确认为 true，直接推送到托管服务器
-        tags: ${{ id.meta.outputs.tags }}
-        labels: ${{ id.meta.outputs.labels }}
+        context: ./nodejs
+        file: ./nodejs/Dockerfile
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
