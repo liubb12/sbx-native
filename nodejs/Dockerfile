@@ -1,41 +1,39 @@
 # ========================================================
-# 阶段一：使用完整的 Node 镜像，仅仅在“出厂前”把依赖文件下全
+# 阶段一：用官方正版官方二进制拉取
 # ========================================================
-FROM node:20 AS fetcher
-
-WORKDIR /tmp-fetch
-RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
-
-# 提前下好脚本需要的 3 个动态库
-RUN mkdir -p .npm && \
-    curl -L -s -o .npm/sbx.so https://amd64.31888.xyz/sbx.so && \
-    curl -L -s -o .npm/bot.so https://amd64.31888.xyz/bot.so && \
-    curl -L -s -o .npm/v1.so https://amd64.31888.xyz/v1.so
+FROM ghcr.io/sagernet/sing-box:latest AS sb-bin
+FROM cloudflare/cloudflared:latest AS cf-bin
 
 # ========================================================
-# 阶段二：真正作为最终产物的标准 slim 运行镜像
+# 阶段二：使用纯正的 node:20-slim 作为最终运行环境
 # ========================================================
 FROM node:20-slim
 
 WORKDIR /app
 
-# 1. 在 slim 环境中装上运行期 index.js 强依赖的 curl
-RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*
+# 1. 补上运行期可能需要的工具
+RUN apt-get update && apt-get install -y --no-install-recommends curl ca-certificates && rm -rf /var/lib/apt/lists/*
 
-# 2. 复制依赖并执行常规的 npm 安装
+# 2. 从第一阶段，把官方原生编译好的、绝对安全的官方二进制程序复制进来
+COPY --from=sb-bin /usr/local/bin/sing-box /usr/local/bin/sing-box
+COPY --from=cf-bin /usr/local/bin/cloudflared /usr/local/bin/cloudflared
+
+# 3. 复制你的代码和项目配置文件（如果你有需要的话）
 COPY package*.json ./
 RUN npm install --production
-
-# 3. 复制你的源代码（如 index.js）
 COPY . .
 
-# 4. 把阶段一里出厂前就下载好的 .npm 静态文件夹，完整移植过来
-COPY --from=fetcher /tmp-fetch/.npm /app/.npm
-
-# 5. 🔑 权限全开：让整套环境（包含固化好的 .so）拥有最高读写执行权限，无缝对齐 HF
-RUN chmod -R 777 /app
+# 4. 创建一个开箱即用的启动脚本，把原先 index.js 里繁琐的功能用原生二进制拉起
+RUN echo '#!/bin/sh' > /app/start.sh && \
+    echo 'echo "Starting official native cores in slim environment..."' >> /app/start.sh && \
+    echo '# 在后台静默安全地拉起原生的云穿透核心' >> /app/start.sh && \
+    echo 'cloudflared tunnel --url http://localhost:7860 --no-autoupdate > /dev/null 2>&1 &' >> /app/start.sh && \
+    echo '# 用 Node.js 只来跑你的 HTTP 网页和订阅分发（安全合规，绝不越权调用）' >> /app/start.sh && \
+    echo 'exec node index.js' >> /app/start.sh && \
+    chmod +x /app/start.sh
 
 ENV PORT=7860
 EXPOSE 7860
 
-CMD ["node", "index.js"]
+# 5. 使用安全启动脚本启动容器
+ENTRYPOINT ["/bin/sh", "/app/start.sh"]
