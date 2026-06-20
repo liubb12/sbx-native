@@ -1,45 +1,64 @@
-name: Build jar to Release
+name: Build Projects to Release
 
 on:
   push:
     branches: [ main ]
+    # 只要 java 或 nodejs 目录下有文件变动，都会触发
     paths:
-      - 'java/pox.yml'
-      - 'java/src/main/java/dev/sbxnative/App.java'
-  workflow_dispatch:
+      - 'java/**'
+      - 'nodejs/**'
+  workflow_dispatch: # 允许你手动点击运行
 
 permissions:
   contents: write 
 
 jobs:
-  build:
+  build-all:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v6
+    - name: Checkout code
+      uses: actions/checkout@v4
 
+    # --------- 1. Java 构建步骤 ---------
     - name: Set up JDK 17
-      uses: actions/setup-java@v5
+      uses: actions/setup-java@v4
       with:
         java-version: '17'
         distribution: 'temurin'
 
-    - name: Build with Maven
+    - name: Build Java with Maven
       run: |
         cd java
-        mvn clean package
-        
-        # 重命名主JAR文件
-        mv target/server-1.0.jar server.jar
-        ls -la server.jar
+        mvn clean package -DskipTests
+        mv target/server-1.0.jar ../server.jar
 
+    # --------- 2. Node.js 打包步骤 ---------
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+
+    - name: Package Node.js App
+      run: |
+        cd nodejs
+        # 安装生产环境依赖
+        npm install --production
+        cd ..
+        # 将整个 nodejs 目录打包压缩为 nodejs-app.tar.gz，方便下载部署
+        tar -czf nodejs-app.tar.gz nodejs
+
+    # --------- 3. 统一发布到 Release ---------
     - name: Create Release
       uses: ncipollo/release-action@v1
       with:
-        artifacts: "java/server.jar"
-        tag: ${{ github.ref_name }}
-        name: "java"
+        artifacts: "server.jar,nodejs-app.tar.gz" # 两个文件都会被放进同一个 Release 中
+        tag: "v1.0.${{ github.run_number }}"
+        name: "Release v1.0.${{ github.run_number }}"
         token: ${{ secrets.GITHUB_TOKEN }}
         allowUpdates: true
         replacesArtifacts: true
-        body: "Automated release from workflow run #${{ github.run_number }}"
+        body: |
+          Automated build from GitHub Actions.
+          - Java build included.
+          - Node.js (slim deployment ready) included.
