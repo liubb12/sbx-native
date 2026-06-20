@@ -1,25 +1,17 @@
-# 核心精髓：直接继承原作者那个能完美通过风控、完美适配 koffi 环境的镜像
+# 1. 继承原作者那个在 Hugging Face 完美放行的基础镜像
 FROM ghcr.io/eooce/sbx:native
 
 WORKDIR /app
 
-# 1. 强行清除原作者残留在容器里的旧配置和旧脚本
-RUN rm -f index.js package.json package-lock.json 2>/dev/null || true
+# 2. 绕过底层 npm 权限限制，直接把你修改过的核心控制逻辑（index.js）强行覆盖进去
+# 这样既保留了他原本完整且能过风控的运行环境，又把内核的控制权拿到了你自己手里
+COPY index.js ./
 
-# 2. 复制你自己修改过的 package.json（包含你自己的 UUID、哪吒配置等默认变量描述）
-COPY package*.json ./
-
-# 3. 重新安装依赖（确保纯净）
-RUN npm install --production
-
-# 4. 复制你自己的 index.js 脚本到容器中，全面接管控制权
-COPY . .
-
-# 5. 再次把目录权限刷满，对齐普通用户
+# 3. 强行赋予运行权限，对齐 Hugging Face
 RUN chmod -R 777 /app
 
 ENV PORT=7860
 EXPOSE 7860
 
-# 启动你自己的脚本逻辑
+# 保持使用原镜像的默认启动机制
 CMD ["node", "index.js"]
