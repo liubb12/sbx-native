@@ -34,8 +34,6 @@ jobs:
     - name: Build and push Docker image
       uses: docker/build-push-action@v5
       with:
-        # 🔑 注意：如果你的 main.py、Dockerfile 在名为 pyhton 的文件夹里，下面保持 ./pyhton
-        # 如果它们就在仓库的最外层根目录下，请把下面两行改成 ./ 和 ./Dockerfile
         context: ./pyhton
         file: ./pyhton/Dockerfile
         push: true
