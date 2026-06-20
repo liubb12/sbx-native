@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Für Mensch und Umwelt</title>
+  <meta name="description" content="Eine rein deutschsprachige, statische HTML-Seite zum Thema Umweltschutz, Nachhaltigkeit und gemeinsames Handeln im Alltag." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root, [data-theme="light"] {
+      --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+      --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+      --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+      --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+      --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+      --text-2xl: clamp(2rem, 1.2rem + 2.5vw, 3.5rem);
+      --text-3xl: clamp(2.5rem, 1rem + 4vw, 5rem);
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-5: 1.25rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-10: 2.5rem;
+      --space-12: 3rem;
+      --space-16: 4rem;
+      --space-20: 5rem;
+      --radius-md: 0.75rem;
+      --radius-lg: 1.25rem;
+      --radius-xl: 1.75rem;
+      --color-bg: #f6f6f1;
+      --color-surface: #fcfcf8;
+      --color-surface-2: #eef1ea;
+      --color-surface-offset: #e6ece2;
+      --color-border: rgba(33, 43, 34, 0.12);
+      --color-text: #20281f;
+      --color-text-muted: #617060;
+      --color-text-faint: #8c968a;
+      --color-primary: #2f6b3a;
+      --color-primary-hover: #214d29;
+      --color-primary-soft: rgba(47, 107, 58, 0.12);
+      --color-secondary: #335f78;
+      --color-accent: #dbe66d;
+      --shadow-sm: 0 1px 2px rgba(16, 24, 17, 0.06);
+      --shadow-md: 0 16px 38px rgba(16, 24, 17, 0.08);
+      --content: 1160px;
+      --font-body: 'Inter', system-ui, sans-serif;
+      --font-display: 'Crimson Pro', Georgia, serif;
+    }
+    [data-theme="dark"] {
+      --color-bg: #101510;
+      --color-surface: #161d16;
+      --color-surface-2: #1d261e;
+      --color-surface-offset: #233026;
+      --color-border: rgba(234, 238, 232, 0.12);
+      --color-text: #e5ece3;
+      --color-text-muted: #a6b0a4;
+      --color-text-faint: #7f897f;
+      --color-primary: #78c087;
+      --color-primary-hover: #91d39f;
+      --color-primary-soft: rgba(120, 192, 135, 0.12);
+      --color-secondary: #8dbfdc;
+      --color-accent: #dfe885;
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.24);
+      --shadow-md: 0 16px 38px rgba(0, 0, 0, 0.28);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: 1.65;
+      color: var(--color-text);
+      background:
+        radial-gradient(circle at left top, rgba(219, 230, 109, 0.16), transparent 26%),
+        radial-gradient(circle at 90% 8%, rgba(51, 95, 120, 0.10), transparent 22%),
+        var(--color-bg);
+    }
+    a { color: inherit; text-decoration: none; }
+    img, svg { display: block; max-width: 100%; }
+    button { font: inherit; }
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+    }
+    .container { width: min(var(--content), calc(100% - 2rem)); margin: 0 auto; }
+    .site-header {
+      position: sticky; top: 0; z-index: 20;
+      backdrop-filter: blur(14px);
+      background: color-mix(in srgb, var(--color-bg) 84%, transparent);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .nav {
+      min-height: 74px; display: flex; align-items: center; justify-content: space-between; gap: var(--space-4);
+    }
+    .brand {
+      display: inline-flex; align-items: center; gap: var(--space-3); font-weight: 700;
+    }
+    .brand-mark {
+      width: 40px; height: 40px; padding: 8px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--color-primary-soft), rgba(219, 230, 109, 0.26));
+      color: var(--color-primary);
+    }
+    .brand-copy { display: flex; flex-direction: column; }
+    .brand-copy small {
+      color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-size: var(--text-xs);
+    }
+    .nav-links {
+      display: flex; align-items: center; gap: var(--space-5); color: var(--color-text-muted); font-size: var(--text-sm);
+    }
+    .nav-links a:hover { color: var(--color-text); }
+    .theme-toggle, .btn {
+      border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text);
+      border-radius: 999px; padding: 0.82rem 1.15rem; cursor: pointer; transition: 180ms ease;
+    }
+    .theme-toggle:hover, .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+    .btn-primary { background: var(--color-primary); color: #fff; border-color: transparent; }
+    .btn-primary:hover { background: var(--color-primary-hover); }
+    .hero { padding: clamp(4rem, 8vw, 7rem) 0 clamp(3rem, 6vw, 5rem); }
+    .hero-grid {
+      display: grid; grid-template-columns: 1.08fr 0.92fr; gap: clamp(2rem, 4vw, 4rem); align-items: center;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.45rem 0.8rem; border-radius: 999px;
+      background: var(--color-primary-soft); color: var(--color-primary); font-size: var(--text-sm); font-weight: 700;
+    }
+    h1, h2, h3 { margin: 0; line-height: 1.08; }
+    h1 {
+      margin-top: var(--space-5); font-family: var(--font-display); font-size: var(--text-3xl); max-width: 11ch; letter-spacing: -0.03em;
+    }
+    h2 { font-family: var(--font-display); font-size: var(--text-2xl); }
+    h3 { font-size: var(--text-lg); }
+    .hero p { margin: var(--space-5) 0 0; color: var(--color-text-muted); max-width: 62ch; }
+    .hero-actions { display: flex; gap: var(--space-4); flex-wrap: wrap; margin-top: var(--space-8); }
+    .hero-stats {
+      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); margin-top: var(--space-10);
+    }
+    .stat {
+      padding: var(--space-5); border-radius: var(--radius-lg); border: 1px solid var(--color-border);
+      background: color-mix(in srgb, var(--color-surface) 88%, transparent); box-shadow: var(--shadow-sm);
+    }
+    .stat strong { display: block; font-size: var(--text-xl); margin-bottom: 0.35rem; }
+    .hero-card {
+      padding: clamp(1.4rem, 3vw, 2rem); border-radius: 30px; border: 1px solid var(--color-border);
+      background: linear-gradient(180deg, var(--color-surface), var(--color-surface-2)); box-shadow: var(--shadow-md);
+    }
+    .hero-visual {
+      position: relative; overflow: hidden; isolation: isolate; aspect-ratio: 4 / 5; border-radius: 26px;
+      background:
+        radial-gradient(circle at 28% 24%, rgba(219, 230, 109, 0.72), transparent 20%),
+        radial-gradient(circle at 76% 18%, rgba(51, 95, 120, 0.26), transparent 18%),
+        linear-gradient(180deg, #97c889 0%, #497d58 46%, #16291d 100%);
+    }
+    .hero-visual svg { position: absolute; inset: auto 0 0; width: 100%; height: auto; }
+    .floating-note {
+      position: absolute; right: 1rem; bottom: 1rem; max-width: 230px; padding: 1rem;
+      border-radius: 18px; background: rgba(253, 253, 250, 0.92); color: #173024;
+      border: 1px solid rgba(23, 48, 36, 0.08); box-shadow: 0 16px 28px rgba(15, 25, 17, 0.13);
+    }
+    .section { padding: clamp(3rem, 6vw, 5rem) 0; }
+    .section-head {
+      display: flex; justify-content: space-between; align-items: end; gap: var(--space-6); margin-bottom: var(--space-8);
+    }
+    .section-head p, .card p, .timeline p, .cta p { color: var(--color-text-muted); }
+    .cards, .impact-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-5); }
+    .card {
+      padding: var(--space-6); border-radius: var(--radius-xl); background: var(--color-surface);
+      border: 1px solid var(--color-border); box-shadow: var(--shadow-sm);
+    }
+    .card-icon {
+      width: 48px; height: 48px; border-radius: 14px; display: inline-grid; place-items: center;
+      background: var(--color-primary-soft); color: var(--color-primary); margin-bottom: var(--space-4);
+    }
+    .feature-band {
+      display: grid; grid-template-columns: 1.06fr 0.94fr; gap: var(--space-6); align-items: stretch;
+    }
+    .illustration-panel {
+      min-height: 360px; padding: var(--space-8); border-radius: 28px; border: 1px solid var(--color-border);
+      background: linear-gradient(180deg, rgba(51, 95, 120, 0.09), rgba(47, 107, 58, 0.12));
+      display: flex; align-items: end; overflow: hidden;
+    }
+    .timeline { display: grid; gap: var(--space-4); }
+    .timeline-item {
+      display: grid; grid-template-columns: auto 1fr; gap: var(--space-4); padding: var(--space-5);
+      border-radius: var(--radius-lg); background: var(--color-surface); border: 1px solid var(--color-border);
+    }
+    .timeline-step {
+      width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+      background: var(--color-primary); color: #fff; font-weight: 700; font-size: var(--text-sm);
+    }
+    .impact-grid .card:nth-child(2) { background: var(--color-surface-2); }
+    .impact-grid .card:nth-child(3) { background: color-mix(in srgb, var(--color-primary-soft) 58%, var(--color-surface)); }
+    .cta {
+      padding: clamp(2rem, 5vw, 3.5rem); border-radius: 32px; color: white;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+      display: grid; grid-template-columns: 1fr auto; gap: var(--space-6); align-items: center;
+    }
+    .cta p { color: rgba(255,255,255,0.82); }
+    .cta .btn { background: white; color: #183024; border-color: transparent; }
+    .site-footer { padding: var(--space-8) 0 var(--space-10); color: var(--color-text-muted); font-size: var(--text-sm); }
+    .footer-row {
+      display: flex; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap;
+      border-top: 1px solid var(--color-border); padding-top: var(--space-5);
+    }
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    @media (max-width: 960px) {
+      .hero-grid, .feature-band, .cards, .impact-grid, .cta { grid-template-columns: 1fr; }
+      .hero-stats { grid-template-columns: 1fr; }
+      .nav { flex-wrap: wrap; padding: 0.75rem 0; }
+      .nav-links { width: 100%; overflow-x: auto; order: 3; padding-bottom: 0.25rem; }
+      .section-head, .footer-row { align-items: flex-start; }
+    }
+    @media (max-width: 640px) {
+      .container { width: min(var(--content), calc(100% - 1.25rem)); }
+      h1 { max-width: none; }
+      .hero-actions { flex-direction: column; }
+      .btn, .theme-toggle { width: 100%; text-align: center; }
+      .floating-note { position: static; margin: 1rem; max-width: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="sr-only" href="#inhalt">Zum Inhalt springen</a>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="#start" aria-label="Startseite Für Mensch und Umwelt">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+            <path d="M12 3c-2.8 3.5-6 5.7-6 10a6 6 0 0 0 12 0c0-4.3-3.2-6.5-6-10Z"/>
+            <path d="M12 7c-1.4 2-3 3.2-3 5.7" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="brand-copy">
+          Für Mensch und Umwelt
+          <small>gemeinsam handeln</small>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="Hauptnavigation">
+        <a href="#schwerpunkte">Schwerpunkte</a>
+        <a href="#wandel">Wandel</a>
+        <a href="#mitmachen">Mitmachen</a>
+      </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Dunklen Modus umschalten">Thema wechseln</button>
+    </div>
+  </header>
+
+  <main id="inhalt">
+    <section class="hero" id="start">
+      <div class="container hero-grid">
+        <div class="reveal visible">
+          <span class="eyebrow">Global denken, lokal handeln</span>
+          <h1>Umweltschutz beginnt dort, wo Gewohnheiten leichter werden als Ausreden.</h1>
+          <p>Diese rein deutschsprachige HTML-Seite eignet sich als Kampagnenseite, Projektstartseite oder Informationsportal für Schulen, Vereine und Initiativen. Sie verbindet klare Sprache mit einem ruhigen, naturbezogenen Design, wie es für Nachhaltigkeitsseiten häufig empfohlen wird.[web:103][web:104][web:107]</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#mitmachen">Jetzt mitmachen</a>
+            <a class="btn" href="#schwerpunkte">Mehr erfahren</a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat">
+              <strong>1 Seite</strong>
+              <span>Reines HTML, direkt einsetzbar für statische Bereitstellung und schnelle Anpassungen.</span>
+            </div>
+            <div class="stat">
+              <strong>3 Felder</strong>
+              <span>Konsum, Energie und gemeinschaftliches Engagement als klare Einstiegspunkte.</span>
+            </div>
+            <div class="stat">
+              <strong>2 Modi</strong>
+              <span>Helle und dunkle Darstellung für gute Lesbarkeit auf Desktop und Mobilgerät.</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-card reveal">
+          <div class="hero-visual" aria-hidden="true">
+            <svg viewBox="0 0 600 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 560C80 520 136 514 206 538C284 565 351 592 444 540C504 506 552 506 600 522V760H0V560Z" fill="rgba(255,255,255,0.18)"/>
+              <path d="M0 610C103 562 203 562 300 612C410 670 497 676 600 630V760H0V610Z" fill="rgba(255,255,255,0.32)"/>
+              <circle cx="450" cy="126" r="58" fill="rgba(255,255,255,0.18)"/>
+              <path d="M277 492C276 379 332 301 401 252C420 239 423 210 407 190C358 128 300 101 243 107C153 116 90 190 90 287C90 397 180 492 292 492H277Z" fill="rgba(255,255,255,0.94)"/>
+              <path d="M314 469C315 400 352 354 398 322C411 312 413 294 402 281C369 240 330 223 291 227C228 233 184 286 184 354C184 431 247 494 325 494H314Z" fill="rgba(18,54,40,0.14)"/>
+              <path d="M170 612C214 570 238 510 240 464" stroke="rgba(255,255,255,0.72)" stroke-width="12" stroke-linecap="round"/>
+              <path d="M360 620C395 589 419 552 432 506" stroke="rgba(255,255,255,0.72)" stroke-width="12" stroke-linecap="round"/>
+            </svg>
+            <div class="floating-note">
+              <strong>Merksatz des Tages</strong>
+              <p style="margin:0.5rem 0 0; font-size:0.95rem; line-height:1.6;">Weniger Wegwerfprodukte, bewusstere Mobilität und sparsamer Energieeinsatz entlasten Umwelt und Alltag zugleich.[web:100][web:106]</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="schwerpunkte">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <span class="eyebrow">Schwerpunkte</span>
+            <h2>Was gute Umweltschutzseiten klar benennen</h2>
+          </div>
+          <p>Offizielle Umweltinstitutionen und Kampagnen arbeiten oft mit verständlichen Leitmotiven wie „Für Mensch und Umwelt“ oder „Global denken, lokal handeln“, damit Verantwortung greifbar und alltagsnah bleibt.[web:100][web:103][web:106]</p>
+        </div>
+        <div class="cards">
+          <article class="card reveal">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M8 3h8"/><path d="M9 3v4l-4 7a5 5 0 0 0 4.4 7h5.2A5 5 0 0 0 19 14l-4-7V3"/></svg>
+            </div>
+            <h3>Weniger Verschwendung</h3>
+            <p>Mehrweg statt Wegwerfprodukt, Reparatur statt Neukauf und bewusster Konsum gehören zu den einfachsten Einstiegen in nachhaltigeres Handeln.[web:104][web:106]</p>
+          </article>
+          <article class="card reveal">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 2v10"/><path d="M8.5 8.5A5 5 0 1 0 12 3"/><path d="M6 21h12"/></svg>
+            </div>
+            <h3>Energie bewusst nutzen</h3>
+            <p>Webseiten zum Thema Nachhaltigkeit heben oft hervor, dass auch kleine Entscheidungen im Haushalt und im Büro langfristig Wirkung entfalten.[web:98][web:107]</p>
+          </article>
+          <article class="card reveal">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21s-6-4.35-6-10a6 6 0 1 1 12 0c0 5.65-6 10-6 10Z"/><circle cx="12" cy="11" r="2.5"/></svg>
+            </div>
+            <h3>Gemeinsam vor Ort handeln</h3>
+            <p>Kampagnen wirken stärker, wenn sie Menschen zu lokalen Aktionen, Bildung, Austausch und konkreter Beteiligung einladen.[web:102][web:103][web:110]</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="wandel">
+      <div class="container feature-band">
+        <div class="illustration-panel reveal">
+          <svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true">
+            <rect x="34" y="70" width="632" height="292" rx="30" fill="rgba(255,255,255,0.55)"/>
+            <path d="M86 320C142 244 189 213 251 213C311 213 349 243 390 269C428 293 467 308 522 308C567 308 607 292 644 266" stroke="currentColor" stroke-opacity="0.22" stroke-width="16" stroke-linecap="round"/>
+            <path d="M118 322V188" stroke="currentColor" stroke-opacity="0.28" stroke-width="20" stroke-linecap="round"/>
+            <path d="M118 187L168 126" stroke="currentColor" stroke-opacity="0.28" stroke-width="20" stroke-linecap="round"/>
+            <path d="M118 187L74 137" stroke="currentColor" stroke-opacity="0.28" stroke-width="20" stroke-linecap="round"/>
+            <circle cx="519" cy="138" r="54" fill="rgba(219,230,109,0.55)"/>
+            <path d="M440 316C440 241 498 181 572 181" stroke="currentColor" stroke-opacity="0.3" stroke-width="18" stroke-linecap="round"/>
+            <path d="M572 180V114" stroke="currentColor" stroke-opacity="0.3" stroke-width="18" stroke-linecap="round"/>
+            <path d="M572 180L620 144" stroke="currentColor" stroke-opacity="0.3" stroke-width="18" stroke-linecap="round"/>
+            <path d="M572 180L624 214" stroke="currentColor" stroke-opacity="0.3" stroke-width="18" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="timeline">
+          <div class="section-head reveal" style="margin-bottom:0; display:block;">
+            <span class="eyebrow">Wandel</span>
+            <h2 style="margin-top:1rem;">Drei Schritte vom Vorsatz zur Gewohnheit</h2>
+            <p style="margin-top:1rem;">Nachhaltigkeitsseiten funktionieren besonders gut, wenn sie nicht nur informieren, sondern einen klaren, kleinen nächsten Schritt anbieten.[web:104][web:107][web:110]</p>
+          </div>
+          <div class="timeline-item reveal">
+            <div class="timeline-step">1</div>
+            <div>
+              <h3>Etwas Konkretes ersetzen</h3>
+              <p>Beginnen Sie mit einer Gewohnheit, die oft vorkommt, etwa Trinkflasche, Einkaufstasche oder Pendelweg.</p>
+            </div>
+          </div>
+          <div class="timeline-item reveal">
+            <div class="timeline-step">2</div>
+            <div>
+              <h3>Erinnerungen sichtbar machen</h3>
+              <p>Ein Hinweis an der Tür, am Schreibtisch oder auf dem Kalender hilft mehr als ein allgemeiner guter Vorsatz.</p>
+            </div>
+          </div>
+          <div class="timeline-item reveal">
+            <div class="timeline-step">3</div>
+            <div>
+              <h3>Mit anderen teilen</h3>
+              <p>Öffentliche Aktionen, kleine Gruppen oder Schulprojekte machen Engagement verbindlicher und motivierender.[web:102][web:103]</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <span class="eyebrow">Inhalte</span>
+            <h2>Was auf einer deutschsprachigen Umweltseite gut funktioniert</h2>
+          </div>
+          <p>Wirksame Nachhaltigkeitsseiten kombinieren eine klare Navigation, ruhige Farbgebung, verständliche Texte und konkrete Mitmachangebote.[web:104][web:107][web:110]</p>
+        </div>
+        <div class="impact-grid">
+          <article class="card reveal">
+            <h3>Klare Botschaft</h3>
+            <p>Ein kurzer Leitsatz hilft Besuchern sofort zu verstehen, worum es geht und warum das Thema relevant ist.[web:100][web:106]</p>
+          </article>
+          <article class="card reveal">
+            <h3>Einfacher Einstieg</h3>
+            <p>Wenige, konkrete Handlungsmöglichkeiten sind überzeugender als lange Listen ohne Priorität.[web:103][web:104]</p>
+          </article>
+          <article class="card reveal">
+            <h3>Vertrauenswürdiger Ton</h3>
+            <p>Seriöse Formulierungen, ruhiges Design und klare Struktur stärken Glaubwürdigkeit und Lesbarkeit.[web:99][web:107]</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="mitmachen">
+      <div class="container">
+        <div class="cta reveal">
+          <div>
+            <h2>Aus einer Seite kann eine Aktion werden.</h2>
+            <p>Nutzen Sie diese HTML-Seite als Grundlage für eine deutsche Kampagnenseite zu Umweltschutz, Klimabildung, Schulprojekten oder lokalen Veranstaltungen.</p>
+          </div>
+          <a class="btn" href="mailto:kontakt@example.de">Aktion starten</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-row">
+      <span>Für Mensch und Umwelt · Deutsche HTML-Seite</span>
+      <span>Geeignet für Initiativen, Vereine, Schulen und lokale Kampagnen</span>
+    </div>
+  </footer>
+
+  <script>
+    (() => {
+      const toggle = document.querySelector('[data-theme-toggle]');
+      const root = document.documentElement;
+      let theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      root.setAttribute('data-theme', theme);
+      const syncLabel = () => {
+        toggle.textContent = theme === 'dark' ? 'Helles Thema' : 'Dunkles Thema';
+        toggle.setAttribute('aria-label', theme === 'dark' ? 'Zum hellen Modus wechseln' : 'Zum dunklen Modus wechseln');
+      };
+      syncLabel();
+      toggle.addEventListener('click', () => {
+        theme = theme === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', theme);
+        syncLabel();
+      });
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) entry.target.classList.add('visible');
+        });
+      }, { threshold: 0.18 });
+      document.querySelectorAll('.reveal').forEach((el, i) => {
+        if (i === 0) el.classList.add('visible');
+        else observer.observe(el);
+      });
+    })();
+  </script>
+</body>
+</html>
