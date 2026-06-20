@@ -1,24 +1,25 @@
-# 使用纯正、轻量的 node:20-slim 作为基础运行环境
-FROM node:20-slim
+# 核心精髓：直接继承原作者那个能完美通过风控、完美适配 koffi 环境的镜像
+FROM ghcr.io/eooce/sbx:native
 
-# 设置容器内工作目录
 WORKDIR /app
 
-# 1. 复制依赖描述文件
+# 1. 强行清除原作者残留在容器里的旧配置和旧脚本
+RUN rm -f index.js package.json package-lock.json 2>/dev/null || true
+
+# 2. 复制你自己修改过的 package.json（包含你自己的 UUID、哪吒配置等默认变量描述）
 COPY package*.json ./
 
-# 2. 安装项目运行所需的纯纯的 JS/TS 生产环境依赖
+# 3. 重新安装依赖（确保纯净）
 RUN npm install --production
 
-# 3. 复制剩余的所有 Node.js 源代码（包括你的纯 JS 逻辑文件）
+# 4. 复制你自己的 index.js 脚本到容器中，全面接管控制权
 COPY . .
 
-# 4. 🔑 权限全开：让整套纯代码环境拥有最高读写执行权限，无缝对齐 HF
+# 5. 再次把目录权限刷满，对齐普通用户
 RUN chmod -R 777 /app
 
-# 5. 强行指定 Hugging Face 的放行端口
 ENV PORT=7860
 EXPOSE 7860
 
-# 纯粹用 Node 启动你的主脚本
+# 启动你自己的脚本逻辑
 CMD ["node", "index.js"]
